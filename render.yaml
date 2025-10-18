@@ -8,12 +8,12 @@ services:
     env: python
     region: oregon
     plan: free  # Change to 'starter' or higher for production
-    pythonVersion: "3.11"
+    pythonVersion: "3.10"
     
     # Build configuration
     buildCommand: |
       pip install --upgrade pip
-      pip install -r requirements.txt
+      pip install --no-cache-dir -r backend/requirements-minimal.txt
       
     # Start command
     startCommand: |
