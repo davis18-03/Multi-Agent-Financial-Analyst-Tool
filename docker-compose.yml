@@ -1,0 +1,72 @@
+# Docker Compose configuration for Multi-Agent Financial Analyst Tool
+# This allows running both backend and frontend locally with proper networking
+
+version: '3.8'
+
+services:
+  # FastAPI Backend Service
+  backend:
+    build: .
+    container_name: multi-agent-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - LOG_LEVEL=INFO
+      - LLM_PROVIDER=openrouter
+      - LLM_MODEL_NAME=openai/gpt-3.5-turbo
+      - LLM_MAX_TOKENS=200
+      - LLM_TEMPERATURE=0.3
+      - CACHE_SIZE=128
+      - REQUEST_TIMEOUT=30
+      - VECTOR_STORE_PATH=/app/vector_store
+      - EMBEDDING_MODEL=all-MiniLM-L6-v2
+      - CHART_SAVE_PATH=/app/charts
+      - CORS_ORIGINS=http://localhost:8501
+    env_file:
+      - .env  # Create this file with your API keys
+    volumes:
+      - ./vector_store:/app/vector_store
+      - ./charts:/app/charts
+      - ./logs:/app/logs
+    command: ["python", "run_app.py", "backend"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Streamlit Frontend Service
+  frontend:
+    build: .
+    container_name: multi-agent-frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://backend:8000
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+    env_file:
+      - .env  # Create this file with your API keys
+    volumes:
+      - ./.streamlit:/app/.streamlit
+    command: ["python", "run_app.py", "frontend"]
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+# Networks
+networks:
+  default:
+    name: multi-agent-network
+
+# Volumes for persistent data
+volumes:
+  vector_store:
+  charts:
+  logs:
