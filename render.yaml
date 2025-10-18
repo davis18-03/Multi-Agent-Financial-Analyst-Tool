@@ -14,8 +14,7 @@ services:
     buildCommand: pip install --upgrade pip setuptools wheel && pip install --no-cache-dir -r backend/requirements.txt
       
     # Start command
-    startCommand: |
-      cd backend && uvicorn api:app --host 0.0.0.0 --port $PORT
+    startCommand: python start_render.py
     
     # Environment variables
     envVars:
@@ -60,6 +59,12 @@ services:
       # CORS Configuration
       - key: CORS_ORIGINS
         value: "https://your-streamlit-app.onrender.com"  # Update with your Streamlit Cloud URL
+      
+      # Python Configuration
+      - key: PYTHONPATH
+        value: /opt/render/project/src
+      - key: PYTHONUNBUFFERED
+        value: "1"
     
     # Health check
     healthCheckPath: /health

@@ -114,9 +114,9 @@ cp secrets.toml.example .streamlit/secrets.toml
 ```
 
 5. **Check system requirements**
-```bash
+   ```bash
 python run_app.py check
-```
+   ```
 
 ### Running the Application
 
@@ -148,8 +148,8 @@ streamlit run app.py --server.port 8501 --server.headless true
 
 #### Access URLs
 - **Frontend**: http://localhost:8501
-- **Backend API**: http://localhost:8000
-- **API Documentation**: http://localhost:8000/docs
+- **Backend API**: http://localhost:{PORT} (default: 8000)
+- **API Documentation**: http://localhost:{PORT}/docs (default: 8000)
 
 ## 🛠️ Configuration
 
@@ -173,6 +173,51 @@ EMBEDDING_MODEL=all-MiniLM-L6-v2
 # Backend URL
 BACKEND_URL=http://localhost:8000
 ```
+
+## 🚀 Deployment
+
+### Render.com Deployment
+
+This project is configured for easy deployment on Render.com:
+
+1. **Fork this repository** to your GitHub account
+
+2. **Connect to Render**:
+   - Go to [Render.com](https://render.com) and sign up/login
+   - Connect your GitHub account
+   - Create a new Web Service from your forked repository
+
+3. **Configure Environment Variables** in Render dashboard:
+   ```
+   OPENROUTER_API_KEY=your_openrouter_api_key_here
+   # OR
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+
+4. **Deploy**: Render will automatically build and deploy your app
+
+5. **Access**: Your API will be available at `https://your-app-name.onrender.com`
+
+### Health Check
+
+After deployment, verify your app is working:
+
+```bash
+# Local health check
+python health_check.py
+
+# Remote health check (replace with your Render URL)
+python health_check.py https://your-app-name.onrender.com
+```
+
+### Troubleshooting Deployment
+
+If you encounter port binding issues:
+
+1. Ensure the `PORT` environment variable is properly set
+2. Check that your `render.yaml` configuration is correct
+3. Verify the startup script `start_render.py` is executable
+4. Check Render logs for detailed error messages
 
 ### Streamlit Secrets (.streamlit/secrets.toml)
 

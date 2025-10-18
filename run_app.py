@@ -48,8 +48,12 @@ def check_requirements():
     return True
 
 
-def check_backend_health(url="http://localhost:8000", timeout=5):
+def check_backend_health(url=None, timeout=5):
     """Check if the backend is healthy."""
+    if url is None:
+        port = os.environ.get("PORT", "8000")
+        url = f"http://localhost:{port}"
+    
     try:
         response = requests.get(f"{url}/health", timeout=timeout)
         return response.status_code == 200
@@ -62,8 +66,9 @@ def start_backend():
     print("🚀 Starting FastAPI backend server...")
     
     # Check if backend is already running
+    backend_port = os.environ.get("PORT", "8000")
     if check_backend_health():
-        print("⚠️  Backend is already running on http://localhost:8000")
+        print(f"⚠️  Backend is already running on http://localhost:{backend_port}")
         return
     
     try:
@@ -71,13 +76,16 @@ def start_backend():
         backend_dir = Path(__file__).parent / "backend"
         os.chdir(backend_dir)
         
+        # Get port from environment or default to 8000
+        port = os.environ.get("PORT", "8000")
+        
         # Start the server
         cmd = [
             sys.executable, "-m", "uvicorn", 
             "api:app", 
             "--reload", 
             "--host", "0.0.0.0", 
-            "--port", "8000"
+            "--port", port
         ]
         
         print("Starting backend with command:", " ".join(cmd))
@@ -146,8 +154,11 @@ def show_status():
     print("📊 System Status:")
     
     # Check backend
-    if check_backend_health():
-        print("✅ Backend: Running on http://localhost:8000")
+    backend_port = os.environ.get("PORT", "8000")
+    backend_url = f"http://localhost:{backend_port}"
+    
+    if check_backend_health(backend_url):
+        print(f"✅ Backend: Running on {backend_url}")
     else:
         print("❌ Backend: Not running")
     
@@ -185,8 +196,8 @@ Examples:
 
 URLs:
     Frontend: http://localhost:8501
-    Backend:  http://localhost:8000
-    API Docs: http://localhost:8000/docs
+    Backend:  http://localhost:{os.environ.get("PORT", "8000")}
+    API Docs: http://localhost:{os.environ.get("PORT", "8000")}/docs
 """)
 
 

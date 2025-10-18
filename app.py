@@ -208,8 +208,10 @@ def initialize_session_state():
         st.session_state.user_id = str(uuid.uuid4())
     
     if 'api_base_url' not in st.session_state:
-        # Get backend URL from secrets or use default
-        st.session_state.api_base_url = st.secrets.get("api", {}).get("backend_url", "http://localhost:8000")
+        # Get backend URL from environment, secrets, or use default
+        backend_port = os.environ.get("PORT", "8000")
+        default_url = f"http://localhost:{backend_port}"
+        st.session_state.api_base_url = os.environ.get("BACKEND_URL") or st.secrets.get("api", {}).get("backend_url", default_url)
 
 
 # Backend API functions

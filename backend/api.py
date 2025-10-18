@@ -560,11 +560,14 @@ if __name__ == "__main__":
         format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {name} | {message}"
     )
     
+    # Get port from environment variable (for Render) or default to 8000
+    port = int(os.environ.get("PORT", 8000))
+    
     # Run the application
     uvicorn.run(
         "api:app",
         host="0.0.0.0",
-        port=8000,
-        reload=True,  # Set to False in production
+        port=port,
+        reload=False,  # Set to False in production
         log_level="info"
     )
