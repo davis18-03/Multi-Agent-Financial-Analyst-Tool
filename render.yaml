@@ -11,9 +11,7 @@ services:
     pythonVersion: "3.10"
     
     # Build configuration
-    buildCommand: |
-      pip install --upgrade pip setuptools wheel
-      pip install --no-cache-dir -r backend/requirements.txt
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install --no-cache-dir -r backend/requirements.txt
       
     # Start command
     startCommand: |
