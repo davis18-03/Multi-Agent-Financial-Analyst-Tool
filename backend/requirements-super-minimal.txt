@@ -1,0 +1,33 @@
+# Ultra-minimal requirements for Render deployment
+# Only using pre-built wheels to avoid compilation issues
+
+# Core FastAPI dependencies
+fastapi==0.109.0
+uvicorn[standard]==0.24.0.post1
+python-multipart==0.0.6
+
+# Data Processing - using latest stable versions with pre-built wheels
+pandas>=2.2.0
+numpy>=1.26.0
+
+# Financial Data
+yfinance==0.2.28
+
+# Basic visualization
+matplotlib>=3.7.0
+
+# Web utilities
+requests==2.31.0
+
+# Configuration
+pydantic>=2.0.0
+python-dotenv==1.0.0
+
+# Logging
+loguru==0.7.2
+
+# Basic AI
+openai>=1.0.0
+
+# Utilities
+python-dateutil>=2.8.0
