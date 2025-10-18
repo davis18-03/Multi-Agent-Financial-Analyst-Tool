@@ -54,7 +54,7 @@ Ensure your repository has these files:
    Region: Oregon (US West)
    Branch: main
    Root Directory: (leave empty)
-   Build Command: pip install --upgrade pip && pip install -r backend/requirements.txt
+   Build Command: pip install --upgrade pip && pip install --no-cache-dir -r backend/requirements-minimal.txt
    Start Command: cd backend && uvicorn api:app --host 0.0.0.0 --port $PORT
    ```
 

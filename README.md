@@ -76,17 +76,18 @@ This tool provides:
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.10+ (recommended for deployment compatibility)
 - Git
 - 4GB+ RAM (for GPU operations) [[memory:3819947]]
+- OpenRouter API key (or OpenAI API key)
 
 ### Installation
 
 1. **Clone the repository**
-```bash
+   ```bash
 git clone https://github.com/your-username/multi-agent-fin-analyst.git
-cd multi-agent-fin-analyst
-```
+   cd multi-agent-fin-analyst
+   ```
 
 2. **Create virtual environment**
 ```bash
@@ -98,14 +99,18 @@ source venv/bin/activate
 ```
 
 3. **Install dependencies**
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 4. **Set up environment variables** [[memory:3819944]]
 ```bash
 cp env.example .env
 # Edit .env with your API keys and configuration
+
+# For deployment, also copy secrets template:
+cp secrets.toml.example .streamlit/secrets.toml
+# Edit .streamlit/secrets.toml with your deployment configuration
 ```
 
 5. **Check system requirements**
@@ -131,6 +136,8 @@ python run_app.py status
 
 **Backend (FastAPI)**
 ```bash
+# Using minimal requirements for deployment compatibility
+pip install -r backend/requirements-minimal.txt
 uvicorn backend.api:app --reload --host 0.0.0.0 --port 8000
 ```
 
@@ -159,12 +166,24 @@ OPENROUTER_API_KEY=your-api-key-here
 ENVIRONMENT=development
 LOG_LEVEL=INFO
 
-# Vector Store
+# Vector Store (optional - can be added later)
 VECTOR_STORE_PATH=./vector_store
 EMBEDDING_MODEL=all-MiniLM-L6-v2
 
 # Backend URL
 BACKEND_URL=http://localhost:8000
+```
+
+### Streamlit Secrets (.streamlit/secrets.toml)
+
+For deployment, configure secrets in `.streamlit/secrets.toml`:
+
+```toml
+[api]
+backend_url = "https://your-backend-name.onrender.com"
+
+[openrouter]
+api_key = "sk-or-v1-your-api-key-here"
 ```
 
 ### GPU Configuration
@@ -223,9 +242,9 @@ Response:
 
 ### Free-Tier Deployment Links
 
-#### Render (Recommended for Free Tier)
-- **Frontend**: [Deploy to Render](https://render.com/deploy)
-- **Backend**: [Deploy to Render](https://render.com/deploy)
+#### Render (Backend) + Streamlit Cloud (Frontend) - Recommended
+- **Backend**: [Deploy to Render](https://render.com/deploy) - Uses `render.yaml` configuration
+- **Frontend**: [Deploy to Streamlit Cloud](https://share.streamlit.io) - Direct from GitHub
 - **Database**: Render PostgreSQL (Free tier available)
 
 #### Railway
@@ -238,6 +257,12 @@ Response:
 
 #### Vercel (Frontend Only)
 - **Streamlit**: [Deploy to Vercel](https://vercel.com/new)
+
+### Deployment Configuration Files
+- `render.yaml` - Render.com deployment configuration
+- `backend/requirements-minimal.txt` - Minimal dependencies for stable deployment
+- `runtime.txt` - Python version specification (3.10.12)
+- `.streamlit/config.toml` - Streamlit configuration
 
 ### Docker Deployment
 
@@ -253,22 +278,29 @@ docker run -p 8000:8000 -p 8501:8501 multi-agent-fin-analyst
 ## 📊 Features
 
 ### Core Capabilities
-- ✅ **Real-time Stock Data**: Live price feeds and historical data
-- ✅ **Technical Analysis**: 20+ technical indicators
-- ✅ **AI-Powered Research**: Intelligent document search and summarization
-- ✅ **Interactive Charts**: Beautiful visualizations with Plotly
+- ✅ **Real-time Stock Data**: Live price feeds and historical data via yfinance
+- ✅ **Technical Analysis**: Basic technical indicators (RSI, MACD, Moving Averages)
+- ✅ **AI-Powered Analysis**: OpenAI-powered stock analysis and insights
+- ✅ **Interactive Charts**: Beautiful visualizations with Plotly and Matplotlib
 - ✅ **Chat Interface**: Natural language query processing
 - ✅ **Watchlist Management**: Track multiple stocks
 - ✅ **Export Functions**: Download analysis reports
 - ✅ **Responsive Design**: Works on desktop and mobile
 
-### Advanced Features
-- ✅ **Multi-Agent Architecture**: Specialized AI agents for different tasks
-- ✅ **RAG Integration**: Retrieval-augmented generation for research
-- ✅ **Caching System**: Optimized performance with intelligent caching
+### Current Features (MVP)
+- ✅ **Multi-Agent Architecture**: Data Agent, Research Agent, Explainer Agent
+- ✅ **FastAPI Backend**: RESTful API with auto-generated documentation
+- ✅ **Streamlit Frontend**: Modern chat interface
+- ✅ **Deployment Ready**: Optimized for Render.com and Streamlit Cloud
 - ✅ **Error Handling**: Robust error recovery and user feedback
 - ✅ **API Documentation**: Auto-generated OpenAPI/Swagger docs
 - ✅ **Logging**: Comprehensive logging and monitoring
+
+### Future Enhancements (Can be added incrementally)
+- 🔄 **Advanced Technical Indicators**: TA-Lib integration for 20+ indicators
+- 🔄 **RAG Integration**: ChromaDB for document search and summarization
+- 🔄 **Vector Store**: Advanced knowledge base integration
+- 🔄 **Advanced AI Models**: LangChain integration for sophisticated analysis
 
 ## 🛠️ Development
 
