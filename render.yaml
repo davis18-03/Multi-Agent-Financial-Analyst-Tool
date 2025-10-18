@@ -13,11 +13,11 @@ services:
     # Build configuration
     buildCommand: |
       pip install --upgrade pip setuptools wheel
-      pip install --no-cache-dir -r backend/requirements-ultra-minimal.txt
+      pip install --no-cache-dir -r backend/requirements.txt
       
     # Start command
     startCommand: |
-      cd backend && uvicorn simple_api:app --host 0.0.0.0 --port $PORT
+      cd backend && uvicorn api:app --host 0.0.0.0 --port $PORT
     
     # Environment variables
     envVars:

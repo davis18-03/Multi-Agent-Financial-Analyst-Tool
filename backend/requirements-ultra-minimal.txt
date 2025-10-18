@@ -1,8 +1,0 @@
-# Ultra-minimal requirements for initial deployment testing
-# Only essential packages to get FastAPI running
-
-fastapi==0.109.0
-uvicorn[standard]==0.24.0.post1
-python-multipart==0.0.6
-pydantic>=2.0.0
-python-dotenv==1.0.0

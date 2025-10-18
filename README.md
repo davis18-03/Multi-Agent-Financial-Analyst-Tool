@@ -260,7 +260,7 @@ Response:
 
 ### Deployment Configuration Files
 - `render.yaml` - Render.com deployment configuration
-- `backend/requirements-minimal.txt` - Minimal dependencies for stable deployment
+- `backend/requirements.txt` - Backend dependencies for deployment
 - `runtime.txt` - Python version specification (3.10.12)
 - `.streamlit/config.toml` - Streamlit configuration
 
@@ -312,7 +312,8 @@ multi-agent-fin-analyst/
 │   ├── research_agent.py  # Document research and RAG
 │   └── explainer_agent.py # User-friendly explanations
 ├── backend/               # FastAPI backend
-│   └── api.py            # Main API endpoints
+│   ├── api.py            # Main API endpoints
+│   └── requirements.txt  # Backend dependencies
 ├── services/             # Core services
 │   ├── data_fetcher.py   # Data retrieval and caching
 │   ├── indicators.py     # Technical indicator calculations
@@ -320,7 +321,8 @@ multi-agent-fin-analyst/
 ├── app.py                # Streamlit frontend
 ├── run_app.py           # Application runner script
 ├── requirements.txt      # Python dependencies
-├── docker-compose.yml    # Docker configuration
+├── render.yaml          # Render.com deployment config
+├── runtime.txt          # Python version specification
 └── README.md            # This file
 ```
 
