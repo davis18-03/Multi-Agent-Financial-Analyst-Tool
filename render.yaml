@@ -8,6 +8,7 @@ services:
     env: python
     region: oregon
     plan: free  # Change to 'starter' or higher for production
+    pythonVersion: "3.11"
     
     # Build configuration
     buildCommand: |
